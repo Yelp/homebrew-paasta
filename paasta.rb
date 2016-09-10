@@ -8,6 +8,8 @@ class Paasta < Formula
   def install
     venv = virtualenv_create(libexec, "python2.7")
     venv.pip_install_and_link buildpath
+    # the Virtualenv object's pip install forces --no-deps, which is really annoying for Paasta, as our
+    # requirements.txt does not specify all recursive dependencies, so here we run the pip command we actually want.
     system venv.instance_variable_get(:@venv_root)/"bin/pip", "install", "-r#{buildpath}/requirements.txt"
   end
 end
